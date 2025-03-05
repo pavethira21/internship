@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import './App.css'
 import Loggedin from './component/loggedIn'
+import Register from './component/register'
+import Movie from './component/Movie'
 //import Card from './component/Cards'
 import data from './assets/data.json'
 //import DropDown from './component/DropDown'
@@ -31,6 +33,7 @@ function App() {
   //   setselectedGenre(event.target.value)
   //   console.log(selectedGenre)
   // }
+  
  
   
 
@@ -39,6 +42,8 @@ function App() {
       <Route path="/" element={<Intro />} />
       <Route path='/userLogged' element={<Loggedin/>}/>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/movies" element={<Movie />}/>
     </Routes></>
   )
     //(<>

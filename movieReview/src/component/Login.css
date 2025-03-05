@@ -1,4 +1,5 @@
-@keyframes imgslide{
+
+@keyframes imgslides{
     0% {background:url("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQCtd9A9C2zCWkOznT6xf4YwB-n5z8kVzHT41U-XfDkmg2Gu9hm")}
     15% {background:url("https://upload.wikimedia.org/wikipedia/en/e/ed/The_Murder_of_Nicole_Brown_Simpson_poster.jpg")}
     30% {background:url("https://upload.wikimedia.org/wikipedia/en/9/90/Bad_Boys_for_Life_poster.jpg")}
@@ -6,69 +7,125 @@
     60% {background:url("https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQjang2tSfHU_olHQ-m_gzuGMDV-h1wMsAsoagx_ho5GW2KksCy")}
     80% {background:url("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQCtd9A9C2zCWkOznT6xf4YwB-n5z8kVzHT41U-XfDkmg2Gu9hm")}
     100% {background:url("https://upload.wikimedia.org/wikipedia/en/a/a2/The_Turning_poster_2020.jpg")}
+
+
 }
 
-.container{
-    display: block;
+
+.container {
+    margin-top: 50px;;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    height: 400px;
-    width: 500px;
-    padding:10px;
-    background-color: rgb(21, 26, 26);
-    border-radius: 20px;
-    box-shadow: 15px 15px 5px rgb(168, 83, 83);
-
-}
-
-img{
-    width:200px
-}
-
-.form-left{
-    
-    width:220px;
-    height:100%;
-    padding:10px;
-    float: left;
-    align-items: center;
+    height: 80vh;
+    background-color: #f4f4f4;
+  }
+  
+  
+  .login-box {
+    display: flex;
+    width: 800px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  
+  .form-left {
+    width: 50%;
+    background: url('https://source.unsplash.com/600x800/?movie,cinema') no-repeat center;
+    background-size: cover;
+    background-position: fixed;
+    background-repeat: no-repeat;
     animation-name: imgslide;
     animation-duration: 10s;
     animation-iteration-count: 10;
-}
 
-.form-right{
-    margin-top:30px;
-    
-    padding:10px;
-    float: right;
-}
-
-.content{
-    display :block;
+  }
+  
+  @media (max-width: 768px) {
+    .form-left {
+      display: none;
+    }
+  }
+  
+  
+  .form-right {
+    width: 50%;
+    padding: 30px;
+  }
+  
+  @media (max-width: 768px) {
+    .form-right {
+      width: 100%;
+    }
+  }
+  
+  
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .content {
+    margin-bottom: 15px;
+  }
+  
+  .content label {
+    display: block;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .content input {
+    width: 100%;
     padding: 10px;
-    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .userAuth {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
     color: white;
-
-}
-
-label{
-    font-size: large;
-    font-weight: 700;
-    text-align: left;
-}
-
-.content{
-    input{
-        height: 30px;
-        width: 200px;
-        border-radius: 5px;
-    }
-    
-}
-
-form{
-    button{
-        border-radius: 10px;
-        background-color: rgb(214, 223, 220);
-    }
-}
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .userAuth:hover {
+    background-color: #0056b3;
+  }
+  
+  
+  .link {
+    text-align: center;
+    margin: 10px 0;
+  }
+  
+  .link a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .link a:hover {
+    text-decoration: underline;
+  }
+  
+  
+  .signup {
+    width: 100%;
+    padding: 10px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .signup:hover {
+    background-color: #5a6268;
+  }
+  

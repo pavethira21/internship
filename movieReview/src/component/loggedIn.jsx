@@ -1,11 +1,11 @@
-import { useState } from "react"
-import data from '../assets/data.json'
-import DropDown from "./DropDown"
+import { useState,useEffect } from "react"
 import Card from "./Cards"
-import './home.css'
 import { useNavigate } from "react-router-dom"
 
 const Loggedin =()=>{
+  const [category, setCategory] = useState('')
+    const [selectedGenre,setselectedGenre] =useState('')
+    
    const navigate = useNavigate();
     function handleSelectedGenre(event){
         setselectedGenre(event.target.value)
@@ -15,21 +15,34 @@ const Loggedin =()=>{
         "https://upload.wikimedia.org/wikipedia/en/0/06/The_Gentlemen_poster.jpg",
         "https://upload.wikimedia.org/wikipedia/en/1/1f/Dolittle_%282020_film_poster%29.png",
         "https://upload.wikimedia.org/wikipedia/en/e/ed/The_Murder_of_Nicole_Brown_Simpson_poster.jpg",
-        "https://upload.wikimedia.org/wikipedia/en/1/1c/Inherit_the_Viper_%282019%29_Film_Poster.jpg",
-        "https://upload.wikimedia.org/wikipedia/en/9/9d/The_Last_Full_Measure_2019_poster.jpg"
+       
 
     ]
     const uName=localStorage.getItem('userName')
-    
-    const [category, setCategory] = useState('')
-    const [selectedGenre,setselectedGenre] =useState('')
-    const selectedCategory = data[0][category]
-    const [log,setlog] = useState(false)
+    const[datas , setData] =useState([])
+    function handleFetch(){
+      if(category =="Movies"){
+        fetch('http://localhost:5000/fetchMovies')
+        .then(res=>res.json())
+        .then(data =>setData(data))
+        .catch(err=>err)
+      }else if (category =="Series"){
+        fetch('http://localhost:5000/fetchSeries')
+        .then(res=>res.json())
+        .then(data =>setData(data))
+        .catch(err=>err)
+      }
+    }
+    useEffect(()=>{
+      handleFetch()
+    },[category])
+    console.log(datas)   
   const genre = ['Action','Thriller','Horror','Science Fiction','Comedy','Drama','Crime','Mystery','Fantasy','Adventure','Supernatural']
-
+  const selectedCategory = datas
+  const [log,setlog] = useState(false)
   function handleHome(){
     console.log(uName)
-    setCategory('')
+    setCategory( )
     setselectedGenre('')
     {uName?navigate('/userLogged'):navigate('/')}
   }
@@ -38,52 +51,72 @@ const Loggedin =()=>{
     localStorage.setItem('userName'," ")
     localStorage.setItem('password'," ")
     navigate('/')
-   
-      
-   
-   
-
   }
   
     return(
        <>
-        <ul style={{borderRadius:"8px"}}>
-        <li><button className="navbut"  onClick={handleHome}>Home</button></li>
-        <li><button className="navbut" onClick={()=>{setCategory("Movies"), setselectedGenre('')}} style={{backgroundColor:(category=="Movies")&&"red"}} >Movie</button></li>
-        <li><button className="navbut" onClick={()=>{setCategory("Series"), setselectedGenre('')}} style={{backgroundColor:(category=="Series")&&"red"}} >Series</button></li>
-       
-        <li><button className="navbut" style={{float:"right"}}  onClick={handleLog}>LogOut</button></li>
+        <ul className="navBar" >
+        <li><a className="navbut" style={{backgroundColor:"#f3ce13",color:"black"}}  onClick={handleHome}>IMHO</a></li>
+        <li><a className="navbut" onClick={()=>{setCategory("Movies"), setselectedGenre('')}} style={{backgroundColor:(category=="Movies")&&"#f3ce13"}} >Movie</a></li>
+        <li><a className="navbut" onClick={()=>{setCategory("Series"), setselectedGenre('')}} style={{backgroundColor:(category=="Series")&&"#f3ce13"}} >Series</a></li>
+        <li><select className="selectGenre" style={{visibility:(category?"visible":"hidden")}} defaultValue={"select"}   onChange={handleSelectedGenre}>
+        <option  value=" " disabled  >GENRE</option>
+        {genre.map((items,i)=>{
+            
+            return(<option key={i} value={items}>{items}</option>)
+            
+        })}
+         
+        
+    </select></li>
+        <li><select style={{float:"right" ,backgroundColor:"black",color:"white"}} onChange={handleLog}><option value=''  className="navbut" style={{float:"right"}} >{uName}</option>
+        <option className="navbut" style={{float:"right"}} value="logOut" >LogOut</option>
+        </select></li>
+        <li></li>
         </ul>
         <div>
         
         
 
         
-        {selectedCategory && selectedCategory.length > 0 ? (
+        {category && category !=" " ? (
           <>
-          
-          <h1>{uName}</h1>
-            <DropDown handleChange={handleSelectedGenre}>{genre}</DropDown>
+            <div >
             <Card className="card" displayGenre={selectedGenre} val={selectedCategory} />
-           
+            </div>  
           
           </>
-        ):<div>
-        <h4>{uName}</h4>
-        <h1>View Movies or Series Details</h1>
-        <h3>Select the Option You want to choose</h3>
+        ):<div className="first-element">
+        
         <div className="imgdisplay">
           
-        </div>
-        
+        </div >
+        <div className="sample-card" > 
         {imageCollection.map((items,i)=>{
-            return(<img key={i} style={{height:"100px",width:"auto"}} src={items} alt="Hello" />)
+            return(<div key={i} className="latest-movies"><img  style={{height:"100px",width:"auto", padding:"5px"}} src={items} alt="Hello" /></div>)
     
 
          })}
-        
-    </div>}
+         </div>
+         
+
+         
+    </div> }
+    <div>
+          
+          </div>
+    
         </div>
+        <footer className="footer">
+       
+        <div className="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Us</a>
+        </div>
+        <p>InMyHonestOpinion</p>
+        <p>&copy; {new Date().getFullYear()}@ IMHO . All rights reserved.</p>
+      </footer>
         </>
             
         

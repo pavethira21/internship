@@ -1,22 +1,27 @@
 [
     {
         "userName":"pave21",
-        "password":"Pavethira@21"
+        "password":"Pavethira@21",
+        "email":"pv@gmail.com"
     },
     {
         "userName":"vaish34",
-        "password":"pAgthe@34"
+        "password":"pAgthe@34",
+        "email":"vsh@gmail.com"
     },
     {
         "userName":"dharsh67",
-        "password":"Dharsh@98"
+        "password":"Dharsh@98",
+        "email":"dh@gmail.com"
     },
     {
-        "userName":"pave21",
-        "password":"pavethira@21"
+        "userName":"yuti04",
+        "password":"yut@4",
+        "email":"yt@gmail.com"
     },
     {
-        "userName":"pave21",
-        "password":"pavethira@21"
+        "userName":"rev19",
+        "password":"re@04",
+        "email":"re@gmail.com"
     }
 ]

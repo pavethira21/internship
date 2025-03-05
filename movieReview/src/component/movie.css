@@ -1,0 +1,38 @@
+.background{
+    background-color: rgb(254, 254, 254);
+    color: black;
+    
+    align-content: center;
+    
+    
+}
+.poster{
+    display: flex;
+}
+.movie_card{
+  
+    
+    margin-left: 50px;
+}
+.Reviews{
+    font-weight: 600;
+    padding: 10px;
+    width: 80%;
+    margin:20px;
+    border-radius: 10px;
+}
+.row{
+    display: flex;
+}
+
+.addReviews{
+    width: 65%;
+    height: 50px ;
+    margin-left: 20px;
+}
+.review-btn{
+    height:50px;
+    width:auto;
+    margin-left: 20px;
+    font-weight: 900;
+}

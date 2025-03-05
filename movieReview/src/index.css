@@ -1,55 +1,44 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background: linear-gradient(#FA6164,#66402B);
-  background-attachment: fixed;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+body{
+  background-color: black;
+  color:azure;
+  margin: none;
 }
 
-
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  flex-wrap: wrap;
+.navBar {
+  list-style-type: none;
+  background-color: black;
+  overflow: hidden;
 }
 
-h1 {
-  flex-wrap: wrap;
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-.userAuth {
-  flex-wrap: wrap;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+.navBar a {
   cursor: pointer;
-  transition: border-color 0.25s;
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
 }
-.userAuth:hover {
-  background-color: #aa343c;
+
+.navBar select{
+  cursor: pointer;
+  float: left;
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  height:auto;
 }
 
 
-.userAuth:focus,
-.userAuth:focus-visible {
-  
-  outline: 4px auto red;
+.navBar a:hover {
+  background-color: #ddd;
+  color: black;
 }
+
+
 
 
