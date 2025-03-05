@@ -14,6 +14,11 @@ async function insertRecords(re){
     const result = await client.db("movieReview").collection("users").insertOne(re)
     return result
   }
+async function getUsers(){
+    const details = await client.db("movieReview").collection("users").find({}).toArray( 
+    );
+    return details
+}
 
 
 async function main(){
@@ -58,8 +63,7 @@ app.get("/fetchSeries",async (req,res)=>{
 app.get("/fetchUsers",async (req,res)=>{
     main()
     try{
-        const details = await client.db("movieReview").collection("users").find({}).toArray( 
-        );
+        const details = getUsers()
         console.log(details)
         res.send(details)
         client.close();
@@ -97,7 +101,20 @@ app.post('/Adduser',async(req,res)=>{
     try{
     const {userName,password,email} =req.body
     const record = {userName:userName,password:password,email:email}
-    const status= insertRecords(record)
+    const users = getUsers();
+
+    const checkExist = (await users).find((item,i)=>{
+        if (item.email == email){
+            let data = item 
+            return data
+          }
+    })
+    console.log(checkExist);
+    
+    if(checkExist){
+        return res.json({message:"User already exist"})
+    }else{
+        const status= insertRecords(record)
                console.log((await status).acknowledged)
                if((await status).acknowledged){
                 client.close()
@@ -108,6 +125,11 @@ app.post('/Adduser',async(req,res)=>{
                 client.close()
                 return res.send("Records cannot be inserted")
                }
+    }
+
+    
+    
+    
             }catch(e){
                 console.log(e)
             }
