@@ -3,6 +3,8 @@ const {MongoClient} = require('mongodb');
 const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser');
+const fs = require('fs')
+
 app.use(cors())
 app.use(bodyParser.json());
 const PORT = process.env.PORT || 5000;
@@ -14,25 +16,64 @@ async function insertRecords(re){
     const result = await client.db("movieReview").collection("users").insertOne(re)
     return result
   }
-async function getUsers(){
-    const details = await client.db("movieReview").collection("users").find({}).toArray( 
-    );
-    return details
-}
-
 
 async function main(){
     try{
         await client.connect();
         console.log("connected to mongodb")   
     }catch(e){console.error(e)}}  
+
+
+app.post("/addCollections",async(req,res)=>{
+    main()
+
+    const {collectionName,filePath} = req.body
+   
+    console.log(typeof filePath)
+    // const collectionName = "users"
+    // const filePath ="users.json"
+    
+    try{
+        
+        const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+        console.log(data)
+        const del = await client.db("movieReview").collection(collectionName).drop()
+        if(del){
+            const result = await client.db("movieReview").collection(collectionName).insertMany(data)
+            client.close()
+            res.send("inserted")
+            console.log(`Inserted ${result.insertedCount} documents`);
+        }else{
+            console.log("not inserted")
+            console.log("not deleted")
+        }
+        
+        
+    }catch(e){
+        console.log(e)
+    }
+    finally{
+        client.close()
+    }
+})
 app.get("/fetchMovies",async (req,res)=>{
+    const {genre} =req.query
+    console.log(genre)
     main()
     try{
-        const details = await client.db("movieReview").collection("movies").find({}).limit(20).toArray();
-        console.log(details)
-        res.send(details)
-        client.close();   
+        if(genre){
+            const details = await client.db("movieReview").collection("movies").find({genres:{"$in":[`${genre}`]}}).limit(20).toArray()
+            console.log(details)
+            res.send(details)
+            client.close(); 
+        }
+        else{
+            const details = await client.db("movieReview").collection("movies").find({}).limit(20).toArray();
+            console.log(details)
+            res.send(details)
+            client.close(); 
+        }
+          
     }catch(e){
         res.send(e)
     }
@@ -43,13 +84,21 @@ app.get("/fetchMovies",async (req,res)=>{
 })
 
 app.get("/fetchSeries",async (req,res)=>{
+    const {genre} =req.query
     main()
     try{
-        const details = await client.db("movieReview").collection("series").find({}).toArray( 
-        );
-        console.log(details)
-        res.send(details)
-        client.close();
+        if(genre && genre !=' '){
+            const details = await client.db("movieReview").collection("series").find({genres:{"$in":[`${genre}`]}}).limit(20).toArray()
+            console.log(details)
+            res.send(details)
+            client.close(); 
+        }
+        else{
+            const details = await client.db("movieReview").collection("series").find({}).limit(20).toArray();
+            console.log(details)
+            res.send(details)
+            client.close(); 
+        }
         
     }catch(e){
         res.send(e)
@@ -63,9 +112,10 @@ app.get("/fetchSeries",async (req,res)=>{
 app.get("/fetchUsers",async (req,res)=>{
     main()
     try{
-        const details = getUsers()
-        console.log(details)
-        res.send(details)
+        const allUsers = await client.db("movieReview").collection("users").find({}).toArray( 
+        );
+        console.log(allUsers)
+        res.send(allUsers)
         client.close();
         
     }catch(e){
@@ -99,31 +149,28 @@ app.get("/fetchLatest",async (req,res)=>{
 app.post('/Adduser',async(req,res)=>{
     main()
     try{
-    const {userName,password,email} =req.body
-    const record = {userName:userName,password:password,email:email}
-    const users = getUsers();
-
-    const checkExist = (await users).find((item,i)=>{
-        if (item.email == email){
-            let data = item 
-            return data
-          }
-    })
-    console.log(checkExist);
+    const {userName,password,email,genre,status} =req.body
+    const record = {userName:userName,password:password,email:email,genre:genre,status:status}
+    const users = await client.db("movieReview").collection("users").findOne({email:email})
     
-    if(checkExist){
-        return res.json({message:"User already exist"})
+    console.log(users)
+    //console.log(checkExist);
+    
+    if(users){
+        client.close()
+        return res.status(401).json({message:"User already exist"})
+        
     }else{
-        const status= insertRecords(record)
-               console.log((await status).acknowledged)
+               const status= insertRecords(record)
+               //console.log((await status).acknowledged)
                if((await status).acknowledged){
                 client.close()
                 console.log("db Closed");
                 
-                return res.send("Records Inserted Succefully")
+                return res.status(200).json({message:"Updated"})
                }else{
                 client.close()
-                return res.send("Records cannot be inserted")
+                return res.status(401).json({message:"Not Updated"})
                }
     }
 
@@ -169,16 +216,40 @@ app.post("/AddReview",async(req,res)=>{
                 client.close()
                 console.log("db Closed");
                 
-                return res.send("Records Inserted Succefully")
+                return res.status(200)
                }else{
+                let status = await client.db("movieReview").collection("reviews").insertOne({title:title,review:[{userName:userName,comment:comment}]})
                 client.close()
-                return res.send("Records cannot be inserted")
+                return res.status(401)
                
         }
         
         
-        console.log(comment)
+        
 
+
+    }catch(e){
+        console.log(e)
+    }
+})
+
+
+
+app.delete("/DeactuvateUser",async(req,res)=>{
+    const {uName} = req.query
+    main()
+    try{
+        const result = await client.db("movieReview").collection("users").deleteOne({userName:uName})
+        console.log(result)
+        
+        if((result).acknowledged){
+            client.close()
+            console.log("db Closed");
+            
+            return res.send("Records Deleted Succefully")
+           }else{
+            client.close()
+            return res.send("Records cannot be Deleted")}
 
     }catch(e){
         console.log(e)

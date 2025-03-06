@@ -44,4 +44,9 @@
     width: 240px;
     
   }
+  .noDisplay{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   

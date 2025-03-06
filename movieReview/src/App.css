@@ -1,15 +1,19 @@
 @keyframes imgslide{
-    0% {background:url("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQCtd9A9C2zCWkOznT6xf4YwB-n5z8kVzHT41U-XfDkmg2Gu9hm")}
+  0% {background:url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiaOklwNqpQeKwvLYvyXOyCSTRtk8hs_ljAA&s")}
+    100% {background: url("https://miro.medium.com/v2/resize:fit:4800/format:webp/1*WoT0DeG-gXTqC4_veycuHg.png")}
+    /* 10% {background:url("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQCtd9A9C2zCWkOznT6xf4YwB-n5z8kVzHT41U-XfDkmg2Gu9hm")}
     15% {background:url("https://upload.wikimedia.org/wikipedia/en/e/ed/The_Murder_of_Nicole_Brown_Simpson_poster.jpg")}
     30% {background:url("https://upload.wikimedia.org/wikipedia/en/9/90/Bad_Boys_for_Life_poster.jpg")}
     45% {background:url("https://upload.wikimedia.org/wikipedia/en/4/4e/AFallFromGrace.png")}
     60% {background:url("https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQjang2tSfHU_olHQ-m_gzuGMDV-h1wMsAsoagx_ho5GW2KksCy")}
-    80% {background:url("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQCtd9A9C2zCWkOznT6xf4YwB-n5z8kVzHT41U-XfDkmg2Gu9hm")}
-    100% {background:url("https://upload.wikimedia.org/wikipedia/en/a/a2/The_Turning_poster_2020.jpg")}
+    80% {background:url("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQCtd9A9C2zCWkOznT6xf4YwB-n5z8kVzHT41U-XfDkmg2Gu9hm")} */
+   
   }
 
   .first-elements{
+    display: block;
     flex-direction: row;
+    
   }
   
   .imgdisplay{
@@ -19,11 +23,9 @@
     float: left;
     height:350px;
     width:65%;
-    flex-direction: column;
-
       padding:10px;
       animation-duration: 30s;
-      animation-iteration-count: 5;
+      animation-iteration-count: infinite;
       box-shadow: 10px 10px 5px rgb(64, 62, 62) ;
       border-radius: 10px;
   }
@@ -46,7 +48,7 @@
     padding: 15px;
     background-color: #333;
     color: white;
-    margin-top: 70%;
+    margin-top: 10%;
     
   }
   
@@ -64,6 +66,76 @@
   
   .footer-links a:hover {
     color: white;
+  }
+
+  .cor{
+    width: 100%;
+    margin: auto;
+  }
+
+  
+  .single-cor{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:300px;
+    
+    margin-top: 20px;
+  }
+  .img-back{
+    border-radius: 20px;
+    display: flex;
+    height:200px;
+
+    justify-content: center;
+    align-items: center;
+  }
+  .img-back img{
+    border-radius: 20px;
+    height: 200px;
+    width:200px;
+  }
+  .img-back img:hover{
+    border-radius: 20px;
+    height: 220px;
+    width:220px;
+    box-shadow: 0px 4px 10px rgb(255, 255, 255);
+  }
+  .cor-back{
+    background-color: rgb(0, 0, 0);
+   
+    color: rgb(255, 255, 255);
+    border-radius: 20px;
+    height:250px;
+    width: 400px;
+    max-width: 100px;
+    min-width:80px;
+  }
+
+  .name-back{
+    margin-left:10px ;
+    margin-top: -10px;
+    justify-content: center;
+    
+  }
+  .carousel{
+    display: flex;
+  justify-content: center;  
+  align-items: center;
+  width: 100%;
+  margin-top: 50px; 
+  padding: 20px;
+  }
+  .slick-slider {  
+    width: 75%;
+   
+  }
+  .heading{
+    display: flex;
+    justify-content: center;  
+    align-items: center;
+    color:#f3ce13;
+    padding: 20px;
   }
   
   

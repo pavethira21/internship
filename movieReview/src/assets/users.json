@@ -2,26 +2,31 @@
     {
         "userName":"pave21",
         "password":"Pavethira@21",
-        "email":"pv@gmail.com"
+        "email":"pv@gmail.com",
+        "status":"true"
     },
     {
         "userName":"vaish34",
         "password":"pAgthe@34",
-        "email":"vsh@gmail.com"
+        "email":"vsh@gmail.com",
+        "status":"true"
     },
     {
         "userName":"dharsh67",
         "password":"Dharsh@98",
-        "email":"dh@gmail.com"
+        "email":"dh@gmail.com",
+        "status":"true"
     },
     {
         "userName":"yuti04",
         "password":"yut@4",
-        "email":"yt@gmail.com"
+        "email":"yt@gmail.com",
+        "status":"true"
     },
     {
         "userName":"rev19",
         "password":"re@04",
-        "email":"re@gmail.com"
+        "email":"re@gmail.com",
+        "status":"true"
     }
 ]

@@ -2,7 +2,8 @@
     background-color: rgb(254, 254, 254);
     color: black;
     
-    align-content: center;
+    justify-content: center;
+    align-items: center;
     
     
 }
@@ -11,7 +12,9 @@
 }
 .movie_card{
   
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-left: 50px;
 }
 .Reviews{
@@ -36,3 +39,4 @@
     margin-left: 20px;
     font-weight: 900;
 }
+

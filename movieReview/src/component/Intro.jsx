@@ -1,14 +1,35 @@
 import { useEffect, useState } from "react"
-import data from '../assets/data.json'
-import DropDown from "./DropDown"
-import Card from "./Cards"
-
-
-import { useNavigate } from "react-router-dom"
+// import data from '../assets/data.json'
+// import DropDown from "./DropDown"
+// import Card from "./Cards"
+import actors from '../assets/actors.json'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick"
+import { useNavigate } from "react-router-dom" 
 
 const Intro =()=>{
+  
+  var settings = {
+    dots: true,
+    infinite: true, 
+    adaptiveHeight: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 800, 
+        settings: { slidesToShow: 2, slidesToScroll: 1 }
+      },
+      {
+        breakpoint: 500,
+        settings: { slidesToShow: 1, slidesToScroll: 1 }
+      }
+    ]
+  };
 
-  const [data,setData] = useState()
+  const [data,setData] = useState([])
   function handleFetch(){
     fetch('http://localhost:5000/fetchLatest')
     .then(res=>res.json())
@@ -56,25 +77,22 @@ const Intro =()=>{
     return(
       <>
 
-<ul className="navBar">
-        <li ><a style={{backgroundColor:"#f3ce13",color:"black"}}>IMHO</a></li>
-        <li style={{float:"right"}}><a onClick={handleReg}>SignUp</a></li>
-        <li style={{float:"right"}}><a onClick={handleLog}>SignIn</a></li>
+        <ul className="navBar">
+          <li ><a style={{backgroundColor:"#f3ce13",color:"black"}}>IMHO</a></li>
+          <li style={{float:"right"}}><a onClick={handleReg}>SignUp</a></li>
+          <li style={{float:"right"}}><a onClick={handleLog}>SignIn</a></li>
         </ul>
         
         <div className="first-elements">
-          <div className="imgdisplay"></div>
-          
-          
+          <div className="imgdisplay">
+
+          </div>
           <div className="sample-card">
             <div>
               Latest Hits
              </div>
               <div>
                {data && data.map((item,i)=>handleMovieList(item,i))}
-            
-              
-             
            </div> 
 
             
@@ -83,17 +101,40 @@ const Intro =()=>{
 
           </div>
           
+        </div><br/>
+
+        <div className="carousel">
+          <div className="cor">
+            <div className="single-cor">
+              <Slider {...settings}>
+            
+                {actors.map((actor,i)=>(
+                  <>
+                 {console.log(actor)}
+                  <div key={i} className="cor-back">
+                    
+                    <div className="img-back"><img  src={actor.url}/></div>
+                    <div className="name-back"><p>{actor.Name}</p> </div>
+                  </div>
+                  </>
+                  
+                ))}
+              
+          </Slider>
+          </div>
+            </div>
+           
         </div>
         
         
-      <footer className="footer">
+       <footer className="footer">
         <p>&copy; {new Date().getFullYear()} InMyHonestOpinion. All rights reserved.</p>
         <div className="footer-links">
           <a href="#">Privacy Policy</a>
           <a href="#">Terms of Service</a>
           <a href="#">Contact Us</a>
         </div>
-      </footer>
+       </footer>
             
         
         {/* <div style={{height:"50px"}}>

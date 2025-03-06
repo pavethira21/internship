@@ -3,6 +3,15 @@ import './movie.css'
 import { useNavigate } from "react-router-dom"
 // handle Review use state use effect to store the review data
 export default function Movie(){
+    const uName = localStorage.getItem('uName')
+    const title= localStorage.getItem('title')
+    const year= localStorage.getItem('year')
+    const cast= localStorage.getItem('cast')
+    const genre= localStorage.getItem('genre')
+    const extract= localStorage.getItem('extract')
+    const thumbnail= localStorage.getItem('thumbnail')
+    
+
     const navigate = useNavigate()
         const [review,setReviews] = useState([])
         const [text,setText] = useState(' ')
@@ -13,12 +22,7 @@ export default function Movie(){
 
 
 
-    const title= localStorage.getItem('title')
-    const year= localStorage.getItem('year')
-    const cast= localStorage.getItem('cast')
-    const genre= localStorage.getItem('genre')
-    const extract= localStorage.getItem('extract')
-    const thumbnail= localStorage.getItem('thumbnail')
+    
     
     function handleReview(){
         const title= localStorage.getItem('title')
@@ -56,8 +60,6 @@ export default function Movie(){
             title:title,
             review:{userName:uName ,comment:text}
      })
-     
-     
      handlePost()
      }
      console.log(comment);
@@ -72,11 +74,26 @@ export default function Movie(){
 
          setText(" ")
      }
+     function handleMovie(){
+        useEffect(()=>{
+            
+            (uName!=' '? navigate('/userLogged'):navigate('/login'))
+        })
+     }
      function handleBack(){
+        localStorage.setItem('title',' ')
+         localStorage.setItem('year',' ')
+        localStorage.setItem('cast',' ')
+        localStorage.setItem('genre',' ')
+        localStorage.setItem('extract',' ')
+        localStorage.setItem('thumbnail',' ')
+
         navigate('/userLogged')
      }
      console.log(text)
-    return(
+     
+    return (
+        (title ==" "?handleMovie():
     <div className="background">
         <button className="back-btn" onClick={handleBack}>Back</button>
         
@@ -95,20 +112,19 @@ export default function Movie(){
                 <p className="text">{extract}</p><br/>
                 </div>
                 <div>
-                <div className="Reviews" style={{backgroundColor:"gray"}}>
+                {/* <div className="Reviews" style={{backgroundColor:"gray"}}>
                     {displayReview? <div>{displayReview}</div> : <div>Be the first to add review</div>}
                 </div>
 
                 <div className="row">
                 <textarea placeholder="addReviews" className="addReviews" onChange={(e)=>handleChange(e)}></textarea>
                 <button className="review-btn" onClick={handleComment} >Add review</button>
-                </div>
-                </div>
+                </div>*/}
+                </div> 
         </div>
     </div>
            
-            
+    )    )
          
       
-    )
 }

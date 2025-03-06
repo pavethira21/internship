@@ -2,7 +2,8 @@ import './Cards.css'
 import { useNavigate } from 'react-router-dom';
 
 
-function Card({val,displayGenre}){
+function Card({val}){
+  
     const navigate = useNavigate()
    function handleMovie(items){
     
@@ -18,8 +19,7 @@ function Card({val,displayGenre}){
 
    } 
    const displayAll = val.map((items,i)=>{
-    let id = items._id
-    console.log(items.id)
+    
         return (
             
        
@@ -56,48 +56,49 @@ function Card({val,displayGenre}){
             
         )   
  })
- let noOfSelectedGenre =0
- const displayNone=<div className='noDisplay'><p>No Details avalable in that category</p></div>
- const displaySelectedGenre = val.map((items,i)=>{
-    if((items.genres).includes(displayGenre)){
-        noOfSelectedGenre +=1
+//  let noOfSelectedGenre =0
 
-        return(
+//  const displaySelectedGenre = val.map((items,i)=>{
+//     if((items.genres).includes(displayGenre)){
+//         noOfSelectedGenre +=1
+
+//         return(
             
            
-            // <div className="movie_card" key={i}>
-            //     <div className="info_section">
-            //     <div className="movie_header">
-            //     <img className='poster' src={items.thumbnail} />
-            //     <h1>{items.title}</h1>
-            //      <h4>{items.year},{items.run_time}</h4>
-            //     <p className="type">{items.cast.join(" ")}</p><br/>
-            //     <p className="type"> {items.genres.join(",")}</p>
-            //     </div>
-            //     <div className="movie_desc">
-            //     <p className="text">{items.extract}</p><br/>
-            //     </div>
-            //     </div>
-            // <div>
-            // </div>
+//             // <div className="movie_card" key={i}>
+//             //     <div className="info_section">
+//             //     <div className="movie_header">
+//             //     <img className='poster' src={items.thumbnail} />
+//             //     <h1>{items.title}</h1>
+//             //      <h4>{items.year},{items.run_time}</h4>
+//             //     <p className="type">{items.cast.join(" ")}</p><br/>
+//             //     <p className="type"> {items.genres.join(",")}</p>
+//             //     </div>
+//             //     <div className="movie_desc">
+//             //     <p className="text">{items.extract}</p><br/>
+//             //     </div>
+//             //     </div>
+//             // <div>
+//             // </div>
             
-            // </div>
-            <div key={i} className="movie-card">
-              <img src={items.thumbnail} alt={items.title} className="movie-poster" />
-              <div className="movie-info">
-                <h3 className="movie-title">{items.title}</h3>
-                <p className="movie-year">Year: {items.year}</p>
-                <button onClick={()=>handleMovie(items)}>Read more </button>
-              </div>
-              </div>
+//             // </div>
+//             <div key={i} className="movie-card">
+//               <img src={items.thumbnail} alt={items.title} className="movie-poster" />
+//               <div className="movie-info">
+//                 <h3 className="movie-title">{items.title}</h3>
+//                 <p className="movie-year">Year: {items.year}</p>
+//                 <button onClick={()=>handleMovie(items)}>Read more </button>
+//               </div>
+//               </div>
            
-        )   
-    }
+//         )   
+//     }
     
     
-})
+// })
+ const displayNone=<div className='noDisplay' ><p>No data avalable in that category</p></div>
    
-   return(displayGenre==''?<div className='movie-row'>{displayAll}</div>:(noOfSelectedGenre==0?displayNone:displaySelectedGenre))
+   return(<div className='movie-row'>{displayAll}</div>)
  
 
 }

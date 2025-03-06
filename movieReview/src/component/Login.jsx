@@ -8,8 +8,10 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Login(){
+    
     const [error,setError] =useState('')
     const [users,setUsers] =useState()
+    const [passVisibility,setPassVisibility] = useState(false)
     // const [type, setType] = useState('password');
     // const [icon, setIcon] = useState(eyeOff);
     const [data,setData] = useState({
@@ -36,11 +38,14 @@ function Login(){
           
         
         }
-        useEffect(()=>{
-          handleFetch()
-          
-      
-        },[])
+        
+            useEffect(()=>{
+                handleFetch()
+                
+            
+              },[])
+        
+        
 
 
 
@@ -57,8 +62,9 @@ function Login(){
         
         };
        
-     
+     console.log(users)
     function handleLogin(e){
+        
         e.preventDefault();
         if(data.uName && data.pWord){
             users.forEach(checkUser)
@@ -75,9 +81,15 @@ function Login(){
     function checkUser(items,i,arr){
         if(items.userName == data.uName){
             if(items.password == data.pWord){
-                localStorage.setItem("userName",data.uName)
+                if(items.status == "true"){
+                    localStorage.setItem("userName",data.uName)
                 localStorage.setItem("password",data.pWord)
+                localStorage.setItem("userGenre",items.genre)
                 navigate('/userLogged')
+                }else{
+                    alert("user Deactivated")
+                }
+                
                 
             }
             else{
@@ -115,7 +127,8 @@ function Login(){
                 </div>
                  <div className="content"> 
                     <label htmlFor="pWord">Password:</label><br/>
-                    <input name="pWord" type="password" onChange={handleChange}/>
+                    <input name="pWord" type={passVisibility?"text":"password"} className='icon-input' onChange={handleChange}/>
+                    <i className={passVisibility?"fa fa-eye icon":"fa fa-eye-slash icon"} style={{color:'black'}} onClick={()=>(setPassVisibility(!passVisibility))}></i>
                     {/* <span  onClick={handleToggle}><Icon /> </span> */}
                      
               
