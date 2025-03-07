@@ -102,21 +102,21 @@ const Intro =()=>{
           </div>
           
         </div><br/>
-
+        <div className="heading">ACTORS</div>
         <div className="carousel">
           <div className="cor">
             <div className="single-cor">
               <Slider {...settings}>
             
                 {actors.map((actor,i)=>(
-                  <>
-                 {console.log(actor)}
+                  
+                 
                   <div key={i} className="cor-back">
                     
                     <div className="img-back"><img  src={actor.url}/></div>
                     <div className="name-back"><p>{actor.Name}</p> </div>
                   </div>
-                  </>
+                
                   
                 ))}
               

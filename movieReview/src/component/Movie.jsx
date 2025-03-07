@@ -1,9 +1,12 @@
 import { useState,useEffect } from "react"
 import './movie.css'
+
 import { useNavigate } from "react-router-dom"
-// handle Review use state use effect to store the review data
+
 export default function Movie(){
-    const uName = localStorage.getItem('uName')
+    
+    const data = "https://www.youtube.com/embed/O2NKzO-fxwQ?si=6qj7P6jNR46FSnVo"
+    const userName = localStorage.getItem('userName')
     const title= localStorage.getItem('title')
     const year= localStorage.getItem('year')
     const cast= localStorage.getItem('cast')
@@ -13,11 +16,13 @@ export default function Movie(){
     
 
     const navigate = useNavigate()
+
+
         const [review,setReviews] = useState([])
         const [text,setText] = useState(' ')
     const [comment,setComment] = useState({
         title:" ",
-        review:{ }
+        review:{userName: userName || "", comment: ""  }
     })
 
 
@@ -25,12 +30,11 @@ export default function Movie(){
     
     
     function handleReview(){
-        const title= localStorage.getItem('title')
 
         fetch(`http://localhost:5000/fetchReviews?title=${title}`)
         .then(res=>res.json())
         .then(data =>setReviews(data))
-        .catch(err=>err)
+        .catch(err=>console.error("Error fetching reviews:", err))
 
         console.log(review)
     }
@@ -42,42 +46,52 @@ export default function Movie(){
      setText(e.target.value)
     }
 
-     const reviewsList =review.review
-     console.log(reviewsList)
-     if(reviewsList){
-        var displayReview = reviewsList.map((items,i)=>{
+     
+   console.log(review)
+    const displayReview = (review?.length>0?(
+        review.map((items,i)=>{
             return(
                 <div key={i}>
                     <p><span>{items.userName}</span>:<span>{items.comment}</span></p>
                 </div>
             )
          })
-     }
-     function handleComment(){
-        const uName=localStorage.getItem('userName')
-        setComment({
-
+        ):<div>Be the first to add review</div>)
+     async function handleComment(){
+        
+        const addComment={
             title:title,
-            review:{userName:uName ,comment:text}
-     })
-     handlePost()
+            review:{userName:userName,comment:text},
+        };
+        setComment(addComment);
+        
+            await handlePost(addComment)
      }
      console.log(comment);
-     function handlePost(){
-        let res= fetch('http://localhost:5000/AddReview',{
-            method:"POST",
-            headers:{'content-type':'application/json'},
-            body:JSON.stringify(comment)
-          })
+     async function handlePost(addComment){
+        try{
+            let res= fetch('http://localhost:5000/AddReview',{
+                method:"POST",
+                headers:{'content-type':'application/json'},
+                body:JSON.stringify(addComment)
+              })
+              if(res.ok){
+                setText("")
+                handleReview();
+              }else{
+                console.error("Error adding review")
+              }
+        }catch(e){
+            console.error(e)
+        }
         
-         console.log(res)
-
-         setText(" ")
+        
+         
      }
      function handleMovie(){
         useEffect(()=>{
             
-            (uName!=' '? navigate('/userLogged'):navigate('/login'))
+            (userName!=' '? navigate('/userLogged'):navigate('/login'))
         })
      }
      function handleBack(){
@@ -98,28 +112,32 @@ export default function Movie(){
         <button className="back-btn" onClick={handleBack}>Back</button>
         
         <div className="movie_card" >
+        <div className="Youtube"><iframe className="Youtube-video" src={data} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe></div>
                 <div className="info_section">
-                <h1>{title}</h1>
-                <h4>{year}</h4>
+                <h1>{title || "Undefined"}</h1>
                 
-                <img className='poster' src={thumbnail} />
+                <h4>{year || "undefined"}</h4>
+                
+                <img className='poster' src={thumbnail} alt="Not found"/>
                 
                  
-                <p>Casts:{cast}</p><br/>
-                <p>Genre: {genre}</p>
+                <p>Casts:{cast || "undefined"}</p><br/>
+                <p>Genre: {genre|| "undefined"}</p>
                 </div>
                 <div className="movie_desc">
-                <p className="text">{extract}</p><br/>
+                <p className="text">{extract|| "undefined"}</p><br/>
                 </div>
+                
+                
                 <div>
-                {/* <div className="Reviews" style={{backgroundColor:"gray"}}>
-                    {displayReview? <div>{displayReview}</div> : <div>Be the first to add review</div>}
+                <div className="Reviews" style={{backgroundColor:"gray"}}>
+                    {displayReview}
                 </div>
 
                 <div className="row">
                 <textarea placeholder="addReviews" className="addReviews" onChange={(e)=>handleChange(e)}></textarea>
                 <button className="review-btn" onClick={handleComment} >Add review</button>
-                </div>*/}
+                </div>
                 </div> 
         </div>
     </div>

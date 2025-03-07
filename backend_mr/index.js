@@ -57,21 +57,41 @@ app.post("/addCollections",async(req,res)=>{
     }
 })
 app.get("/fetchMovies",async (req,res)=>{
-    const {genre} =req.query
+    const {genre,page} =req.query
+    const limit = 20;
+    const skip = (page - 1) * limit;
     console.log(genre)
     main()
     try{
         if(genre){
-            const details = await client.db("movieReview").collection("movies").find({genres:{"$in":[`${genre}`]}}).limit(20).toArray()
-            console.log(details)
-            res.send(details)
+            
+            const details = await client.db("movieReview").collection("movies").find({genres:{"$in":[`${genre}`]}}).limit(limit).toArray()
+            
+            console.log("hit")
+            const totalReviews = await client.db("movieReview").collection("movies").countDocuments({});
             client.close(); 
+            console.log("not hit")
+            return res.status(200).json({
+            details,
+            currentPage: page,
+            totalPages: Math.ceil(totalReviews / limit),
+            totalReviews,
+        });
+            
         }
         else{
-            const details = await client.db("movieReview").collection("movies").find({}).limit(20).toArray();
-            console.log(details)
-            res.send(details)
+            const details = await client.db("movieReview").collection("movies").find({}).skip(skip).limit(20).toArray();
+            console.log("hit")
+            const totalReviews = await client.db("movieReview").collection("movies").countDocuments({});
             client.close(); 
+            console.log("not hit")
+            return res.status(200).json({
+            details,
+            currentPage: page,
+            totalPages: Math.ceil(totalReviews / limit),
+            totalReviews,
+        });
+            
         }
           
     }catch(e){
@@ -208,28 +228,26 @@ app.post("/AddReview",async(req,res)=>{
     try{
         const{title,review}=req.body
         const{userName,comment} = review
-        //const comment ={title:title,review:review}
-        
-            let status = await client.db("movieReview").collection("reviews").updateOne({title:title},{$push:{review:{userName:userName,comment:comment}}})
+        const newEntry = {title:title,review:[{userName:userName,comment:comment}]  } 
+       
+            let exist = await client.db("movieReview").collection("reviews").findOne({ title:title })
+            if(exist){
+                let status = await client.db("movieReview").collection("reviews").updateOne({title:title},{$push:{review:{userName:userName,comment:comment}}})
+                if(status.modifiedCount>0){
+                    return res.status(200).json({message:"Added successfully"})
+                }else{return res.status(500).json({error:"failed to Add"})}
+            }else{
+                let status = await client.db("movieReview").collection("reviews").insertOne(newEntry)
+                if(status.acknowledged){
+                    return res.status(201).json({message:"Added successfully"})
+                }else{return res.status(500).json({error:"failed to Add"})}
+            }
             
-            if((status).acknowledged){
-                client.close()
-                console.log("db Closed");
-                
-                return res.status(200)
-               }else{
-                let status = await client.db("movieReview").collection("reviews").insertOne({title:title,review:[{userName:userName,comment:comment}]})
-                client.close()
-                return res.status(401)
-               
-        }
-        
-        
-        
-
-
     }catch(e){
         console.log(e)
+        return res.status(500).json({error:"Server error"})
+    }finally{
+        await client.close();
     }
 })
 

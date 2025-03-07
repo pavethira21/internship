@@ -5,6 +5,7 @@ import Modal from "./Modal"
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick"
+//import data from '../assets/movies-2020s.json'
 
 
 const Loggedin =()=>{
@@ -13,7 +14,7 @@ const Loggedin =()=>{
     infinite: true, 
     adaptiveHeight: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 5,
     slidesToScroll: 1,
     responsive: [
       {
@@ -28,7 +29,9 @@ const Loggedin =()=>{
   };
   const [modalState,setModal] = useState(false)
   const [category, setCategory] = useState('')
-    const [selectedGenre,setselectedGenre] =useState('')
+  const [totalPage,setTotalPages]= useState()
+  const[page,setPage] = useState(1)
+  const [selectedGenre,setselectedGenre] =useState('')
     const userGenre = localStorage.getItem("userGenre")
     console.log(userGenre)
    const navigate = useNavigate();
@@ -45,9 +48,11 @@ const Loggedin =()=>{
     function handleFetch(){
       
       if(category =="Movies"){
-        fetch(`http://localhost:5000/fetchMovies?genre=${selectedGenre}`)
+        fetch(`http://localhost:5000/fetchMovies?genre=${selectedGenre}&page=${page}`)
         .then(res=>res.json())
-        .then(data =>setData(data))
+        .then(data =>{setData(data.details)
+          setTotalPages(data.totalPages);
+        })
         .catch(err=>err)
       }else if (category =="Series"){
         fetch(`http://localhost:5000/fetchSeries?genre=${selectedGenre}`)
@@ -58,14 +63,16 @@ const Loggedin =()=>{
       else{
         fetch(`http://localhost:5000/fetchMovies?genre=${userGenre}`)
         .then(res=>res.json())
-        .then(data =>setData(data))
+        .then(data =>{setData(data.details)
+          setTotalPages(data.totalPages);
+        })
         .catch(err=>err)
 
       }
     }
     useEffect(()=>{
       handleFetch()
-    },[category,selectedGenre])
+    },[category,selectedGenre,page])
     console.log(datas)   
   const genre = ['Action','Thriller','Horror','Science Fiction','Comedy','Drama','Crime','Mystery','Fantasy','Adventure','Supernatural']
   const selectedCategory = datas
@@ -127,7 +134,12 @@ const Loggedin =()=>{
     else
       setModal(false)
   }
-  console.log(uName)
+
+  // (data.map((items)=>{
+  //   console.log(items.embeddId)
+  //   localStorage.setItem('embeddId',items.embeddId)
+  // }))
+  console.log(totalPage)
     return((uName !=' '?
       <>
        
@@ -154,19 +166,18 @@ const Loggedin =()=>{
         </ul>
         {modalState&&<Modal handle={handleDelete}>You want to deactivate account?</Modal>}
         <div>
-        
-        
-        
-
-        
         {category && category !=" " ? (
-          <>
+          
             <div >
-            <Card className="card"  val={selectedCategory} />
+            <Card className="card"  val={selectedCategory}  />
+            <div style={{padding:"20px",margin:"5%",display:"flex",justifyContent:"center",alignItems:"center"}} ><button onClick={()=>setPage(page-1)} style={{visibility:(page===1)?"hidden":"visible"}}>previous</button>
+            <span style={{color:"white"}}>{page}</span>
+            <button onClick={()=>setPage(page+1)} style={{visibility:(page===totalPage)?"hidden":"visible"}}>next</button>
+            </div>
             </div>  
           
-          </>
-        ):<><div className="first-element">
+          
+        ):<><div className="first-element" style={{backgroundColor:"gray"}}>
         
         <div className="imgdisplay">
           
